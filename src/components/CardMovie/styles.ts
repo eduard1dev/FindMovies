@@ -1,8 +1,10 @@
 import styled from 'styled-components/native'
 
+import { RectButton } from 'react-native-gesture-handler'
+
 import { colors, fonts } from '../../styles'
 
-export const Container = styled.View`
+export const Container = styled(RectButton)`
     width: 100%;
     height: 100%;
 `
@@ -18,5 +20,12 @@ export const Title = styled.Text`
     padding-right: 20px;
     padding-left: 10px;
     margin-top: 10px;
+`
+export const TextWatchLater = styled.Text`
+    font-size: 18px;
+    font-family: ${fonts.Text1};
+    color: ${colors.red};
+    padding-right: 20px;
+    padding-left: 10px;
 `
 

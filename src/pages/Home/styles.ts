@@ -4,6 +4,7 @@ import { colors, fonts } from '../../styles'
 
 export const Container = styled.View`
     flex: 1;
+    background-color: ${colors.gray_dark};
 `
 export const BackgroundImage = styled.ImageBackground`
     flex: 1;

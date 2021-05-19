@@ -10,11 +10,11 @@ const StackRoutes: React.FC = () => {
     return (
         <Stack.Navigator  
             screenOptions = {{
-                headerShown: false
+                headerShown: false,
             }}
         >
-            <Stack.Screen component={Home} name='Home'/>
-            <Stack.Screen component={Details} name='Details'/>
+                <Stack.Screen component={Home} name='Home' />
+                <Stack.Screen component={Details} name='Details' />
         </Stack.Navigator>
     )
 }

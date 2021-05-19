@@ -4,4 +4,6 @@ export default {
     gray_light: '#666666',
 
     white: '#FFFFFF',
+
+    red: '#ff4d4d',
 }

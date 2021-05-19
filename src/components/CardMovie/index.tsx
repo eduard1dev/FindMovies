@@ -4,15 +4,20 @@ import {
     Text
 } from 'react-native'
 
+import { RootState } from '../../store'
+import { useSelector } from 'react-redux'
+
+import { RectButtonProps } from 'react-native-gesture-handler'
+
 import {
     Container,
     CardImage,
     Title,
+    TextWatchLater
 } from './styles'
 
 
-
-interface CardMovieProps {
+interface CardMovieProps extends RectButtonProps{
     data: {
         backdrop_path: string,
         original_language: string,
@@ -20,14 +25,22 @@ interface CardMovieProps {
         vote_average: string,
         title: string,
         poster_path: string,
+        id: string,
     }
 }
 
-function CardMovie({ data }: CardMovieProps){
+
+
+function CardMovie({ data, ...rest }: CardMovieProps){
+
+    const { moviesWatchLater } = useSelector((state: RootState) => state.moviesWatchLater)
+
     const image = { uri: `https://image.tmdb.org/t/p/original${data.poster_path}`}
 
     return(
-        <Container>
+        <Container
+            {...rest}
+        >
             <CardImage
                 source={image}
                 resizeMode={'stretch'}
@@ -37,6 +50,15 @@ function CardMovie({ data }: CardMovieProps){
             >
                 {data.title}
             </Title>
+            {
+                moviesWatchLater.includes(data.id)
+                && (
+                    <TextWatchLater>
+                        Watch Later
+                    </TextWatchLater>
+                )
+            }
+            
         </Container>
     )
 }

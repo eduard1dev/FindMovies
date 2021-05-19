@@ -28,7 +28,7 @@ const Header: React.FC = () => {
                     </TextUser>
                 </View>
                 <Subtitle>
-                    Book your favorite movie
+                    Find your favorite movie
                 </Subtitle>
             </View>
             <ImageContainer source={UserImage} />

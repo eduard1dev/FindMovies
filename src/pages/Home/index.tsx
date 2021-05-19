@@ -35,7 +35,7 @@ interface GenresProps {
     name: string,
 }
 
-interface MovieProps {
+export interface MovieProps {
     backdrop_path: string,
     genre_ids: string[],
     id: string,
@@ -46,13 +46,14 @@ interface MovieProps {
     release_date: string,
     title: string,
     vote_average: string,
+    adult: string,
 }
 
-const Home: React.FC = () => {
+const Home: React.FC = ({ navigation }: any) => {
     const {width: screenWidth} = Dimensions.get('window')
 
     const [genres, setGenres] = useState<GenresProps[]>([])
-    const [genreSelected, setGenreSelected] = useState<string>('28')
+    const [genreSelected, setGenreSelected] = useState<string>()
     const [movies, setMovies] = useState<MovieProps[]>([])
     const [filteredMovies, setFilteredMovies] = useState<MovieProps[]>([])
 
@@ -74,6 +75,7 @@ const Home: React.FC = () => {
             return <AppLoading/>
         }
         setMovies(data.results)
+        setFilteredMovies(data.results)
     }
 
     // requisições à Api tmdb: Genres e Movies.
@@ -101,6 +103,20 @@ const Home: React.FC = () => {
 
     // handle background image
     const [backgroundImage, setBackgroundImage] = useState<number>(0)
+
+    //Navegação entre as rotas
+
+
+    function handleMovieSelected(movie: MovieProps){
+        let firstMovieGenre  = 'No Genre'
+        genres.forEach((element) => {
+            if(element.id === movie.genre_ids[0]){
+                firstMovieGenre = element.name
+            }
+        })
+        
+        navigation.navigate('Details', { movie, firstMovieGenre })
+    }
 
     return (
         <Container>
@@ -130,7 +146,7 @@ const Home: React.FC = () => {
                                 <GenreButton
                                     name={item.name}
                                     onPress={() => handleGenreSelected(item.id)}
-                                    active={item.id=== genreSelected}
+                                    active={item.id === genreSelected}
                                 />
                             )
                         }
@@ -158,6 +174,7 @@ const Home: React.FC = () => {
                         renderItem={({item}: { item: MovieProps}) => (
                                 <CardMovie
                                     data={item}
+                                    onPress={() => handleMovieSelected(item)}
                                 />
                             )
                         }
