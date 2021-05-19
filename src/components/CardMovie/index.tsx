@@ -58,7 +58,6 @@ function CardMovie({ data, ...rest }: CardMovieProps){
                     </TextWatchLater>
                 )
             }
-            
         </Container>
     )
 }

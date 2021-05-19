@@ -29,6 +29,7 @@ export const GenresListContainer = styled.View`
 export const CarouselContainer = styled.View`
     flex: 1;
     padding: 20px 0;
+    justify-content: center;
 `
 
 

@@ -25,7 +25,6 @@ export const DetailsContainer = styled.View`
     flex-direction: column;
     width: 100%;
     align-items: flex-start;
-    elevation: 10;
     padding: 0 20px;
     padding-top: 10px;
 `

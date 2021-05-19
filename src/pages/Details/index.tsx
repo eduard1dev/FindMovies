@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dimensions } from 'react-native'
+import { View } from 'react-native'
 
 import { RootState, AppDispatch } from '../../store'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,14 +21,10 @@ import {
 import { toogleIncrement } from '../../store/MoviesWatchLater.store'
 
 
-
 const Details: React.FC = ({route, navigation}: any) => {
     // estados do redux
     const dispatch = useDispatch<AppDispatch>()
     const { moviesWatchLater } = useSelector((state: RootState) => state.moviesWatchLater)
-
-    // dimensões da tela do dispositivo
-    const { height: screenHeight } = Dimensions.get('window')
 
     // parâmetros da rota
     const { movie, firstMovieGenre } = route.params
@@ -78,20 +74,24 @@ const Details: React.FC = ({route, navigation}: any) => {
                         </TextDetail>
                     </WatchLaterButton>
                 </HeaderDetails>
-                <Title>
-                    {movie.title}
-                </Title>
-                <Subtitle
-                    numberOfLines={5}
+                <View 
+                    style={{flex: 1, justifyContent: 'center'}}
                 >
-                    {movie.overview}
-                </Subtitle>
-                <Title>
-                    Release Date
-                </Title>
-                <Subtitle>
-                    {movie.release_date}
-                </Subtitle>
+                    <Title>
+                        {movie.title}
+                    </Title>
+                    <Subtitle
+                        numberOfLines={5}
+                    >
+                        {movie.overview}
+                    </Subtitle>
+                    <Title>
+                        Release Date
+                    </Title>
+                    <Subtitle>
+                        {movie.release_date}
+                    </Subtitle>
+                </View>
             </DetailsContainer>
         </Container>
     )

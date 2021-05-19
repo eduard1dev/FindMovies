@@ -4,7 +4,6 @@ import {
     StatusBar,
     FlatList,
     Dimensions,
-
 } from 'react-native'
 
 import Api from '../../services/api'
@@ -122,9 +121,9 @@ const Home: React.FC = ({ navigation }: any) => {
         <Container>
             <BackgroundImage
                 source={
-                    movies[0] 
+                    filteredMovies[0] 
                     && 
-                    { uri: `https://image.tmdb.org/t/p/original${movies[backgroundImage].poster_path}`} 
+                    { uri: `https://image.tmdb.org/t/p/original${filteredMovies[backgroundImage].poster_path}`} 
                 }
                 imageStyle={{ opacity: 0.15 }}
                 blurRadius={8}
