@@ -1,5 +1,5 @@
 # FindMovies
-App para encontrar filmes. test
+App para encontrar filmes. 
 
 ![DemoGif](./demo/FindMovieVideoDemo.gif)  
   <img src="./demo/Screenshot1.png" width="320" >
