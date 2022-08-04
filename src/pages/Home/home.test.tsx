@@ -5,11 +5,6 @@ import Api from '../../services/api';
 import { mocks } from './__mocks__';
 
 describe('Home screen tests', () => {
-  /* test('should show the username into home screen', async () => {
-    const { findByText } = render(<Home />);
-    expect(await findByText('Eduardo', { exact: false })).toBeTruthy();
-  }); */
-
   test('should call api on useEffect', async () => {
     const apiCall = jest.fn((url) => {
       switch (url) {
