@@ -1,7 +1,19 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-const Api = axios.create({
-    baseURL: 'https://api.themoviedb.org'
-})
+export const api = axios.create({
+  baseURL: 'https://api.themoviedb.org',
+});
 
-export default Api
+const request = async (options: AxiosRequestConfig, store?: any) => {
+  const onSuccess = (response: AxiosResponse) => {
+    return response.data;
+  };
+
+  const onError = (error: any) => {
+    return Promise.reject(error.response);
+  };
+
+  return api(options).then(onSuccess).catch(onError);
+};
+
+export default request;

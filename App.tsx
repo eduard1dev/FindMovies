@@ -10,7 +10,11 @@ import {
 
 import Routes from './src/routes';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 const App: React.FC = () => {
+  const queryClient = new QueryClient();
+
   let [fontsLoaded] = useFonts({
     Roboto_400Regular,
     Roboto_300Light,
@@ -21,9 +25,11 @@ const App: React.FC = () => {
   }
 
   return (
-    <Provider store={store}>
-      <Routes />
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+    </QueryClientProvider>
   );
 };
 

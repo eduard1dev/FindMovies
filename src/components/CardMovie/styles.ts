@@ -1,31 +1,30 @@
-import styled from 'styled-components/native'
+import styled from 'styled-components/native';
 
-import { RectButton } from 'react-native-gesture-handler'
+import { RectButton } from 'react-native-gesture-handler';
 
-import { colors, fonts } from '../../styles'
+import { colors, fonts } from '../../styles';
 
 export const Container = styled(RectButton)`
-    width: 100%;
-    height: 100%;
-`
+  width: 100%;
+  height: 100%;
+`;
 export const CardImage = styled.Image`
-    width: 100%;
-    height: 80%;
-    border-radius: 20px;
-`
+  width: 100%;
+  height: 80%;
+  border-radius: 20px;
+`;
 export const Title = styled.Text`
-    font-size: 18px;
-    font-family: ${fonts.Text1};
-    color: ${colors.white};
-    padding-right: 20px;
-    padding-left: 10px;
-    margin-top: 10px;
-`
+  font-size: 18px;
+  font-family: ${fonts.Text1};
+  color: ${colors.white};
+  padding-right: 20px;
+  padding-left: 10px;
+  margin-top: 10px;
+`;
 export const TextWatchLater = styled.Text`
-    font-size: 18px;
-    font-family: ${fonts.Text1};
-    color: ${colors.red};
-    padding-right: 20px;
-    padding-left: 10px;
-`
-
+  font-size: 18px;
+  font-family: ${fonts.Text1};
+  color: ${colors.red};
+  padding-right: 20px;
+  padding-left: 10px;
+`;

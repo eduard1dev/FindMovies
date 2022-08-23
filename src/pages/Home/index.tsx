@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, StatusBar, FlatList, Dimensions } from 'react-native';
-
-import Api from '../../services/api';
+import React, { useEffect, useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { View, Dimensions, FlatList } from 'react-native';
 
 import Header from '../../components/Header';
 import GenreButton from '../../components/GenreButton';
 import CardMovie from '../../components/CardMovie';
 
 import Carousel from 'react-native-reanimated-carousel';
+
+import useHome, { MovieProps } from './useHome';
 
 import {
   Container,
@@ -19,31 +20,23 @@ import {
 } from './styles';
 
 import { colors } from '../../styles';
-import useGetMovies, { MovieProps } from '../../hooks/useGetMovies';
 
 const Home = ({ navigation }: any) => {
   const { width: screenWidth } = Dimensions.get('screen');
 
+  const [backgroundImage, setBackgroundImage] = useState<number>(0);
+
   const {
-    fetchMovies,
-    fetchGenres,
     handleMovieSelected,
     handleGenreSelected,
     filteredMovies,
     genres,
     genreSelected,
-  } = useGetMovies();
-
-  useEffect(() => {
-    fetchGenres();
-    fetchMovies();
-  }, []);
+  } = useHome();
 
   function handleSnapSlide(index: number) {
     setBackgroundImage(index);
   }
-
-  const [backgroundImage, setBackgroundImage] = useState<number>(0);
 
   return (
     <Container>
@@ -56,16 +49,12 @@ const Home = ({ navigation }: any) => {
         imageStyle={{ opacity: 0.15 }}
         blurRadius={8}
       >
-        <StatusBar
-          hidden={true}
-          barStyle={'dark-content'}
-          backgroundColor={colors.gray_dark}
-        />
+        <StatusBar hidden={true} backgroundColor={colors.gray_dark} />
         <Header />
         <TextStrong>Genres</TextStrong>
         <GenresListContainer>
           <FlatList
-            data={genres}
+            data={genres.data?.genres}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <GenreButton
@@ -87,30 +76,17 @@ const Home = ({ navigation }: any) => {
           <TextLight>Movies</TextLight>
         </View>
         <CarouselContainer>
-          {/* <Carousel
-            layout={'default'}
-            data={filteredMovies}
-            ref={carouselRef}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }: { item: MovieProps }) => (
-              <CardMovie
-                data={item}
-                onPress={() => handleMovieSelected(item)}
-              />
-            )}
-            sliderWidth={screenWidth}
-            itemWidth={250}
-            inactiveSlideOpacity={0.5}
-            onSnapToItem={(index) => handleSnapSlide(index)}
-          /> */}
           <Carousel
             testID="carousel"
             autoPlayReverse={false}
             width={screenWidth}
-            height={300}
+            height={700}
             data={filteredMovies}
+            mode="parallax"
+            modeConfig={{ parallaxScrollingOffset: 85 }}
             renderItem={({ item }: { item: MovieProps }) => (
               <CardMovie
+                underlayColor="transparent"
                 testID="carousel-item"
                 data={item}
                 onPress={() => handleMovieSelected(item, navigation)}

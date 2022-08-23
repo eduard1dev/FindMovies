@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
-import Api from '../services/api';
+import request from '../../services/api';
 
 interface GenresProps {
   id: string;
@@ -21,34 +22,35 @@ export interface MovieProps {
   adult: string;
 }
 
-const useGetMovies = () => {
-  const [genres, setGenres] = useState<GenresProps[]>([]);
-  const [genreSelected, setGenreSelected] = useState<string>();
+const useHome = () => {
+  const [genreSelected, setGenreSelected] = useState<string>('0');
   const [filteredMovies, setFilteredMovies] = useState<MovieProps[]>([]);
 
-  let movies: MovieProps[] = [];
+  const getGenres = () =>
+    request({
+      url: '3/genre/movie/list?api_key=f0a360a00e6d9881d19efe3c62a0302b&language=en-US',
+      method: 'GET',
+    });
 
-  async function fetchGenres() {
-    const { data } = await Api.get(
-      '3/genre/movie/list?api_key=f0a360a00e6d9881d19efe3c62a0302b&language=en-US',
-    );
-    setGenres(data.genres);
-  }
+  const getMovies = () =>
+    request({
+      url: '3/movie/popular?api_key=f0a360a00e6d9881d19efe3c62a0302b&language=en-US&page=1',
+      method: 'GET',
+    });
 
-  async function fetchMovies() {
-    const { data } = await Api.get(
-      '3/movie/popular?api_key=f0a360a00e6d9881d19efe3c62a0302b&language=en-US&page=1',
-    );
-    movies = data.results;
-    setFilteredMovies(data.results);
-  }
+  const genres = useQuery(['genres'], getGenres);
+  const movies = useQuery(['movies'], getMovies, {
+    onSuccess: ({ results }: { results: MovieProps[] }) => {
+      setFilteredMovies(results);
+    },
+  });
 
   function handleGenreSelected(genreId: string) {
     if (genreSelected === genreId) {
       setGenreSelected('0');
-      setFilteredMovies(movies);
+      setFilteredMovies(movies.data!.results);
     } else {
-      const filtered = movies.filter((movie) =>
+      const filtered = movies.data!.results.filter((movie: MovieProps) =>
         movie.genre_ids.includes(genreId),
       );
       setFilteredMovies(filtered);
@@ -58,7 +60,7 @@ const useGetMovies = () => {
 
   function handleMovieSelected(movie: MovieProps, navigation: any) {
     let firstMovieGenre = 'No Genre';
-    genres.forEach((element) => {
+    genres.data.genres.forEach((element: GenresProps) => {
       if (element.id === movie.genre_ids[0]) {
         firstMovieGenre = element.name;
       }
@@ -68,14 +70,13 @@ const useGetMovies = () => {
   }
 
   return {
-    fetchMovies,
-    fetchGenres,
     filteredMovies,
     genres,
     handleMovieSelected,
     handleGenreSelected,
     genreSelected,
+    movies,
   };
 };
 
-export default useGetMovies;
+export default useHome;
