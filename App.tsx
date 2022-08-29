@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import store from './src/store';
+import messaging from '@react-native-firebase/messaging';
+import { useNavigation } from '@react-navigation/native';
 
 import {
   useFonts,

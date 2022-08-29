@@ -5,6 +5,7 @@ export const api = axios.create({
 });
 
 const request = async (options: AxiosRequestConfig, store?: any) => {
+  console.log('api call');
   const onSuccess = (response: AxiosResponse) => {
     return response.data;
   };
