@@ -1,12 +1,12 @@
-import React from 'react';
-import { Image, Text } from 'react-native';
+import React from "react";
+import { Image, Text } from "react-native";
 
-import { RootState } from '../../store';
-import { useSelector } from 'react-redux';
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 
-import { RectButtonProps } from 'react-native-gesture-handler';
+import { RectButtonProps } from "react-native-gesture-handler";
 
-import { Container, CardImage, Title, TextWatchLater } from './styles';
+import { Container, CardImage, Title, TextWatchLater } from "./styles";
 
 interface CardMovieProps extends RectButtonProps {
   data: {
@@ -16,17 +16,17 @@ interface CardMovieProps extends RectButtonProps {
     vote_average: string;
     title: string;
     poster_path: string;
-    id: string;
+    id: number;
   };
 }
 
 function CardMovie({ data, ...rest }: CardMovieProps) {
   const { moviesWatchLater } = useSelector(
-    (state: RootState) => state.moviesWatchLater,
+    (state: RootState) => state.moviesWatchLater
   );
 
   const image = {
-    uri: `https://image.tmdb.org/t/p/original${data.poster_path}`,
+    uri: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
   };
 
   return (
@@ -34,10 +34,10 @@ function CardMovie({ data, ...rest }: CardMovieProps) {
       <CardImage
         testID="carousel-item-img"
         source={image}
-        resizeMode={'stretch'}
+        resizeMode={"stretch"}
       />
       <Title numberOfLines={1}>{data.title}</Title>
-      {moviesWatchLater.includes(data.id) && (
+      {moviesWatchLater.includes(data.id.toString()) && (
         <TextWatchLater>Watch Later</TextWatchLater>
       )}
     </Container>

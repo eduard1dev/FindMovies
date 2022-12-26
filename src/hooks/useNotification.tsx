@@ -1,5 +1,4 @@
-import messaging from '@react-native-firebase/messaging';
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 const useNotification = (navigation: any) => {
   const onBackground = () => {

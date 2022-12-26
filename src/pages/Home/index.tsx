@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { View, Dimensions, FlatList } from 'react-native';
+import React, { RefObject, useEffect, useRef, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { View, Dimensions, FlatList } from "react-native";
 
-import Header from '../../components/Header';
-import GenreButton from '../../components/GenreButton';
-import CardMovie from '../../components/CardMovie';
+import Header from "../../components/Header";
+import GenreButton from "../../components/GenreButton";
+import CardMovie from "../../components/CardMovie";
 
-import Carousel from 'react-native-reanimated-carousel';
+import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 
-import useHome, { MovieProps } from './useHome';
+import useHome, { MovieProps } from "./useHome";
 
 import {
   Container,
@@ -17,14 +17,13 @@ import {
   TextLight,
   CarouselContainer,
   BackgroundImage,
-} from './styles';
+} from "./styles";
 
-import { colors } from '../../styles';
+import { colors } from "../../styles";
 
 const Home = ({ navigation }: any) => {
-  const { width: screenWidth } = Dimensions.get('screen');
-
-  const [backgroundImage, setBackgroundImage] = useState<number>(0);
+  const { width: screenWidth } = Dimensions.get("screen");
+  let carouselRef: RefObject<ICarouselInstance> = useRef(null);
 
   const {
     handleMovieSelected,
@@ -32,18 +31,29 @@ const Home = ({ navigation }: any) => {
     filteredMovies,
     genres,
     genreSelected,
+    backgroundImage,
+    handleSnapSlide,
+    setBackgroundImage,
   } = useHome();
 
-  function handleSnapSlide(index: number) {
-    setBackgroundImage(index);
-  }
+  useEffect(() => {
+    if (filteredMovies.length > 0 && backgroundImage !== 0) {
+      carouselRef?.current?.scrollTo({
+        index: 0,
+        animated: false,
+      });
+      setBackgroundImage(0);
+    }
+  }, [filteredMovies]);
 
   return (
     <Container>
       <BackgroundImage
         source={
           filteredMovies[0] && {
-            uri: `https://image.tmdb.org/t/p/original${filteredMovies[backgroundImage].poster_path}`,
+            uri:
+              filteredMovies[backgroundImage]?.poster_path &&
+              `https://image.tmdb.org/t/p/w400${filteredMovies[backgroundImage].poster_path}`,
           }
         }
         imageStyle={{ opacity: 0.15 }}
@@ -71,19 +81,32 @@ const Home = ({ navigation }: any) => {
             showsHorizontalScrollIndicator={false}
           />
         </GenresListContainer>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: "row" }}>
           <TextStrong>Popular</TextStrong>
           <TextLight>Movies</TextLight>
         </View>
         <CarouselContainer>
           <Carousel
             testID="carousel"
+            ref={carouselRef}
             autoPlayReverse={false}
             width={screenWidth}
-            height={700}
+            height={580}
             data={filteredMovies}
             mode="parallax"
-            modeConfig={{ parallaxScrollingOffset: 85 }}
+            style={{
+              transform: [{ translateY: -16 }],
+            }}
+            defaultIndex={0}
+            modeConfig={{
+              parallaxScrollingOffset: 90,
+              parallaxScrollingScale: 0.82,
+              parallaxAdjacentItemScale: 0.65,
+            }}
+            onSnapToItem={(index) => handleSnapSlide(index)}
+            panGestureHandlerProps={{
+              activeOffsetX: [-10, 10],
+            }}
             renderItem={({ item }: { item: MovieProps }) => (
               <CardMovie
                 underlayColor="transparent"
@@ -92,7 +115,7 @@ const Home = ({ navigation }: any) => {
                 onPress={() => handleMovieSelected(item, navigation)}
               />
             )}
-            onSnapToItem={(index) => handleSnapSlide(index)}
+            loop={false}
           />
         </CarouselContainer>
       </BackgroundImage>

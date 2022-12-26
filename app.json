@@ -1,43 +1,23 @@
 {
   "expo": {
-    "name": "FindMovies",
-    "slug": "FindMovies",
+    "name": "findmovies",
+    "slug": "findmovies",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
+    "platforms": [
+      "ios",
+      "android",
+      "web"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.ed1.FindMovies"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.ed1.FindMovies",
-      "googleServicesFile": "./google-services.json"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      "bundleIdentifier": "com.ed1.findmovies"
     },
     "extra": {
       "eas": {
-        "projectId": "c46a52cc-a1c1-4910-94ff-f9f52cbf33ec"
+        "projectId": "6d99969d-b24d-4d2b-a891-b3e57b02e938"
       }
     },
-    "plugins": [
-      "@react-native-firebase/app"
-    ]
+    "android": {
+      "package": "com.ed1.findmovies"
+    }
   }
 }

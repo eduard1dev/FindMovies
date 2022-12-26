@@ -1,8 +1,8 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
-import { colors, fonts } from '../../styles';
+import { colors, fonts } from "../../styles";
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
   flex: 1;
   background-color: ${colors.gray_dark};
 `;
@@ -28,7 +28,7 @@ export const GenresListContainer = styled.View`
 `;
 export const CarouselContainer = styled.View`
   flex: 1;
-  padding: 20px 0;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 `;

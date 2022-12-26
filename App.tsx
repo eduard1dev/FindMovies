@@ -1,18 +1,17 @@
-import React, { useEffect } from 'react';
-import { Provider } from 'react-redux';
-import store from './src/store';
-import messaging from '@react-native-firebase/messaging';
-import { useNavigation } from '@react-navigation/native';
+import React, { useEffect } from "react";
+import { Provider } from "react-redux";
+import store from "./src/store";
+import { useNavigation } from "@react-navigation/native";
 
 import {
   useFonts,
   Roboto_400Regular,
   Roboto_300Light,
-} from '@expo-google-fonts/roboto';
+} from "@expo-google-fonts/roboto";
 
-import Routes from './src/routes';
+import Routes from "./src/routes";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const App: React.FC = () => {
   const queryClient = new QueryClient();

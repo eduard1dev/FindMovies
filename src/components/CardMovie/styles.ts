@@ -1,16 +1,18 @@
-import styled from 'styled-components/native';
+import styled from "styled-components/native";
 
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton } from "react-native-gesture-handler";
+import FastImage from "react-native-fast-image";
 
-import { colors, fonts } from '../../styles';
+import { colors, fonts } from "../../styles";
 
 export const Container = styled(RectButton)`
+  display: flex;
   width: 100%;
   height: 100%;
 `;
-export const CardImage = styled.Image`
+export const CardImage = styled(FastImage)`
   width: 100%;
-  height: 80%;
+  flex: 1;
   border-radius: 20px;
 `;
 export const Title = styled.Text`
