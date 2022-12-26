@@ -1,11 +1,12 @@
 # FindMovies
-App para encontrar filmes. 
+:clapper: This app helps you to find a movie to watch.
+
+What is in use in this app?
+- Redux Toolkit
+- React Query
+- Carousel Reanimated
+- Fast Image
+- anothers common libraries, check it out.
 
 ![DemoGif](./demo/FindMovieVideoDemo.gif)
- <img src="./demo/menu.png">  
- <img src="./demo/Screenshot1.png" width="320" >
- <img src="./demo/Screenshot2.png" width="320" >
- <img src="./demo/Screenshot3.png" width="320" >
- <img src="./demo/Screenshot4.png" width="320" >
- <img src="./demo/Screenshot5.png" width="320" >
-  
+ 
