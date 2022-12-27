@@ -1,43 +1,101 @@
 import React from "react";
 import { act, fireEvent, render, waitFor } from "../../__test__/test-utils";
 import Home from "../Home";
-import { api } from "../../services/api";
+import * as services from "../../services/api";
 import { mocks } from "./__mocks__";
+import { NavigationContainer } from "@react-navigation/native";
+import StackRoutes from "../../routes/stack.routes";
 
 describe("Home screen tests", () => {
+  const apiCall = jest.fn(({ url }) => {
+    switch (url) {
+      case "3/genre/movie/list?api_key=f0a360a00e6d9881d19efe3c62a0302b&language=en-US":
+        return Promise.resolve(mocks.genres.data);
+      case "3/movie/popular?api_key=f0a360a00e6d9881d19efe3c62a0302b&language=en-US&page=1":
+        return Promise.resolve(mocks.movies.data);
+      default:
+        return Promise.reject(new Error("not found"));
+    }
+  });
+
+  jest.spyOn(services, "default").mockImplementation(apiCall);
+
+  afterEach(() => {
+    apiCall.mockClear();
+  });
+
   test("should call api on useEffect", async () => {
-    const apiCall = jest.fn(({ url }) => {
-      switch (url) {
-        case "3/genre/movie/list?api_key=f0a360a00e6d9881d19efe3c62a0302b&language=en-US":
-          return Promise.resolve({ data: mocks.genres });
-        case "3/movie/popular?api_key=f0a360a00e6d9881d19efe3c62a0302b&language=en-US&page=1":
-          return Promise.resolve({ data: mocks.movies });
-        default:
-          return Promise.reject(new Error("not found"));
-      }
-    });
-
-    jest.spyOn(api, "get").mockImplementation(apiCall);
-
     const { findAllByTestId } = render(<Home />);
 
-    expect((await findAllByTestId("genre-item")).length).toBeGreaterThan(0);
-    expect((await findAllByTestId("carousel-item")).length).toBeGreaterThan(0);
+    // ...
+    // Wait until the callback does not throw an error. In this case, that means
+    // it'll wait until the mock function has been called once.
+    await waitFor(async () => {
+      expect(apiCall).toHaveBeenCalledTimes(2);
+      const genreItens = await findAllByTestId("genre-item");
+      const carousel = await findAllByTestId("carousel-item");
+      expect(genreItens.length).toBeGreaterThan(0);
+      expect(carousel.length).toBeGreaterThan(0);
+    });
+    // ...
   });
 
   test("should set active button when press genre button and show carousel", async () => {
     const { findAllByTestId, getByTestId } = render(<Home />);
+    // ...
+    // Wait until the callback does not throw an error. In this case, that means
+    // it'll wait until the mock function has been called once.
+    await waitFor(async () => {
+      expect(apiCall).toHaveBeenCalledTimes(2);
+      const genreButtons = await findAllByTestId("genre-item");
 
-    const genreButtons = await findAllByTestId("genre-item");
+      expect(genreButtons[0].props.active).toEqual(false);
 
-    expect(genreButtons[0].props.active).toEqual(false);
+      fireEvent.press(genreButtons[0]);
 
-    fireEvent.press(genreButtons[0]);
+      expect(genreButtons[0].props.active).toEqual(true);
 
-    expect(genreButtons[0].props.active).toEqual(true);
+      const carousel = await findAllByTestId("carousel");
 
-    const carousel = getByTestId("carousel");
-
-    waitFor(() => expect(carousel).toBeTruthy());
+      expect(carousel).toBeTruthy();
+    });
+    // ...
   });
+
+  test("should go to details page when press carousel item", async () => {
+    const stackRoutes = render(
+      <NavigationContainer>
+        <StackRoutes />
+      </NavigationContainer>
+    );
+
+    // ...
+    // Wait until the callback does not throw an error. In this case, that means
+    // it'll wait until the mock function has been called once.
+    await waitFor(async () => {
+      expect(apiCall).toHaveBeenCalledTimes(2);
+      const carouselButtons = await stackRoutes.findAllByTestId(
+        "carousel-item"
+      );
+
+      fireEvent.press(carouselButtons[0]);
+
+      const detailsBannerImage = await stackRoutes.findAllByTestId(
+        "details-banner-image"
+      );
+
+      expect(detailsBannerImage).toBeTruthy();
+    });
+    // ...
+  });
+
+  /* test("should show Genres text", async () => {
+    const { findAllByTestId } = render(<Home />);
+
+    await waitFor(async () => {
+      expect(apiCall).toHaveBeenCalledTimes(2);
+      const genreItens = await findAllByTestId("genre-item");
+      expect(genreItens.length).toBeGreaterThan(0);
+    });
+  }); */
 });
