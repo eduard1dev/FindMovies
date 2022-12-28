@@ -25,23 +25,27 @@ describe("Home screen tests", () => {
   });
 
   test("should call api on useEffect", async () => {
-    const { findAllByTestId } = render(<Home />);
+    const { getAllByTestId, findAllByTestId } = render(<Home />);
 
     // ...
     // Wait until the callback does not throw an error. In this case, that means
     // it'll wait until the mock function has been called once.
-    await waitFor(async () => {
+    await act(async () => {
       expect(apiCall).toHaveBeenCalledTimes(2);
-      const genreItens = await findAllByTestId("genre-item");
-      const carousel = await findAllByTestId("carousel-item");
-      expect(genreItens.length).toBeGreaterThan(0);
-      expect(carousel.length).toBeGreaterThan(0);
     });
+
+    const genreItens = await findAllByTestId("genre-item");
+
+    expect(genreItens.length).toBeGreaterThan(0);
+
+    const carousel = await findAllByTestId("carousel-item");
+
+    expect(carousel.length).toBeGreaterThan(0);
     // ...
   });
 
   test("should set active button when press genre button and show carousel", async () => {
-    const { findAllByTestId, getByTestId } = render(<Home />);
+    const { getAllByTestId, findAllByTestId } = render(<Home />);
     // ...
     // Wait until the callback does not throw an error. In this case, that means
     // it'll wait until the mock function has been called once.
@@ -55,7 +59,7 @@ describe("Home screen tests", () => {
 
       expect(genreButtons[0].props.active).toEqual(true);
 
-      const carousel = await findAllByTestId("carousel");
+      const carousel = getAllByTestId("carousel");
 
       expect(carousel).toBeTruthy();
     });
@@ -74,13 +78,11 @@ describe("Home screen tests", () => {
     // it'll wait until the mock function has been called once.
     await waitFor(async () => {
       expect(apiCall).toHaveBeenCalledTimes(2);
-      const carouselButtons = await stackRoutes.findAllByTestId(
-        "carousel-item"
-      );
+      const carouselButtons = stackRoutes.getAllByTestId("carousel-item");
 
       fireEvent.press(carouselButtons[0]);
 
-      const detailsBannerImage = await stackRoutes.findAllByTestId(
+      const detailsBannerImage = stackRoutes.getAllByTestId(
         "details-banner-image"
       );
 
@@ -88,14 +90,4 @@ describe("Home screen tests", () => {
     });
     // ...
   });
-
-  /* test("should show Genres text", async () => {
-    const { findAllByTestId } = render(<Home />);
-
-    await waitFor(async () => {
-      expect(apiCall).toHaveBeenCalledTimes(2);
-      const genreItens = await findAllByTestId("genre-item");
-      expect(genreItens.length).toBeGreaterThan(0);
-    });
-  }); */
 });

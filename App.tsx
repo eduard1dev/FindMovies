@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import store from "./src/store";
-import { useNavigation } from "@react-navigation/native";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import {
   useFonts,
@@ -12,6 +12,10 @@ import {
 import Routes from "./src/routes";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+GoogleSignin.configure({
+  webClientId: "",
+});
 
 const App: React.FC = () => {
   const queryClient = new QueryClient();

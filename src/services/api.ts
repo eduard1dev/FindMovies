@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 export const api = axios.create({
-  baseURL: "https://api.themoviedb.org",
+  baseURL: "https://api.themoviedb.org/",
 });
 
 const request = async (options: AxiosRequestConfig, store?: any) => {

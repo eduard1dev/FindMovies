@@ -17,7 +17,9 @@
       }
     },
     "android": {
-      "package": "com.ed1.findmovies"
-    }
+      "package": "com.ed1.findmovies",
+      "googleServicesFile": "./android/app/google-services.json"
+    },
+    "plugins": ["@react-native-google-signin/google-signin"]
   }
 }
