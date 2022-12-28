@@ -5,6 +5,11 @@ import * as services from "../../services/api";
 import { mocks } from "./__mocks__";
 import { NavigationContainer } from "@react-navigation/native";
 import StackRoutes from "../../routes/stack.routes";
+import googleSignIn from "@react-native-google-signin/google-signin";
+import auth from "@react-native-firebase/auth";
+
+jest.mock("@react-native-google-signin/google-signin", () => {});
+jest.mock("@react-native-firebase/auth", () => {});
 
 describe("Home screen tests", () => {
   const apiCall = jest.fn(({ url }) => {
@@ -32,20 +37,20 @@ describe("Home screen tests", () => {
     // it'll wait until the mock function has been called once.
     await act(async () => {
       expect(apiCall).toHaveBeenCalledTimes(2);
+
+      const genreItens = await findAllByTestId("genre-item");
+
+      expect(genreItens.length).toBeGreaterThan(0);
+
+      const carousel = await findAllByTestId("carousel-item");
+
+      expect(carousel.length).toBeGreaterThan(0);
     });
-
-    const genreItens = await findAllByTestId("genre-item");
-
-    expect(genreItens.length).toBeGreaterThan(0);
-
-    const carousel = await findAllByTestId("carousel-item");
-
-    expect(carousel.length).toBeGreaterThan(0);
     // ...
   });
 
   test("should set active button when press genre button and show carousel", async () => {
-    const { getAllByTestId, findAllByTestId } = render(<Home />);
+    const { findByTestId, findAllByTestId } = render(<Home />);
     // ...
     // Wait until the callback does not throw an error. In this case, that means
     // it'll wait until the mock function has been called once.
@@ -55,13 +60,16 @@ describe("Home screen tests", () => {
 
       expect(genreButtons[0].props.active).toEqual(false);
 
-      fireEvent.press(genreButtons[0]);
+      await act(async () => {
+        fireEvent.press(genreButtons[0]);
+      });
 
       expect(genreButtons[0].props.active).toEqual(true);
 
-      const carousel = getAllByTestId("carousel");
-
-      expect(carousel).toBeTruthy();
+      await act(async () => {
+        const carousel = await findByTestId("carousel");
+        expect(carousel).toBeTruthy();
+      });
     });
     // ...
   });
@@ -78,15 +86,21 @@ describe("Home screen tests", () => {
     // it'll wait until the mock function has been called once.
     await waitFor(async () => {
       expect(apiCall).toHaveBeenCalledTimes(2);
-      const carouselButtons = stackRoutes.getAllByTestId("carousel-item");
+      await act(async () => {
+        const carouselButtons = await stackRoutes.findAllByTestId(
+          "carousel-item"
+        );
 
-      fireEvent.press(carouselButtons[0]);
+        fireEvent.press(carouselButtons[0]);
+      });
 
-      const detailsBannerImage = stackRoutes.getAllByTestId(
-        "details-banner-image"
-      );
+      await act(async () => {
+        const detailsBannerImage = await stackRoutes.findByTestId(
+          "details-banner-image"
+        );
 
-      expect(detailsBannerImage).toBeTruthy();
+        expect(detailsBannerImage).toBeTruthy();
+      });
     });
     // ...
   });
