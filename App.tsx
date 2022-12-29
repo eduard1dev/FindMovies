@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
-import store from "./src/store";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import {
@@ -12,9 +11,14 @@ import {
 import Routes from "./src/routes";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import auth from "@react-native-firebase/auth";
+import store from "./src/store";
+import { setUser, UserProps } from "./src/store/User.store";
 
 GoogleSignin.configure({
-  webClientId: "",
+  webClientId:
+    "208631863731-ni68lsde64bu75ieq159mqpimavu7vjl.apps.googleusercontent.com",
+  scopes: ["profile"],
 });
 
 const App: React.FC = () => {
@@ -24,6 +28,20 @@ const App: React.FC = () => {
     Roboto_400Regular,
     Roboto_300Light,
   });
+
+  function onAuthStateChanged(user: any) {
+    store.dispatch(
+      setUser({
+        displayName: user.displayName || "not found",
+        photoURL: user.photoURL || "not found",
+      })
+    );
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
 
   if (!fontsLoaded) {
     return <></>;

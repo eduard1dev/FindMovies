@@ -1,15 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from "@reduxjs/toolkit";
 
-import MoviesWatchLaterReducer from './MoviesWatchLater.store'
-
+import UserReducer from "./User.store";
+import MoviesWatchLaterReducer from "./MoviesWatchLater.store";
 
 const store = configureStore({
-    reducer: {
-        moviesWatchLater: MoviesWatchLaterReducer
-    }
-})
+  reducer: {
+    moviesWatchLater: MoviesWatchLaterReducer,
+    user: UserReducer,
+  },
+});
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootStateProps = ReturnType<typeof store.getState>;
+export type AppDispatchProps = typeof store.dispatch;
 
-export default store
+export default store;
