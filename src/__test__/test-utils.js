@@ -1,8 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import store from '../store';
+
 
 const AllTheProviders = ({ children }) => {
   const queryClient = new QueryClient({
@@ -14,7 +13,7 @@ const AllTheProviders = ({ children }) => {
     },
   })
 
-  return <QueryClientProvider client={queryClient}><Provider store={store}>{children}</Provider></QueryClientProvider>;
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };
 
 const customRender = (ui, options) =>

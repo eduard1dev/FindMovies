@@ -1,9 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 
-import { RootState, AppDispatch } from "../../store";
-import { useDispatch, useSelector } from "react-redux";
-
 import { Ionicons } from "@expo/vector-icons";
 
 import {
@@ -18,13 +15,12 @@ import {
   TextDetail,
   WatchLaterButton,
 } from "./styles";
-import { toogleIncrement } from "../../store/MoviesWatchLater.store";
+import { useGlobalStore } from "../../store";
 
 const Details: React.FC = ({ route, navigation }: any) => {
-  // estados do redux
-  const dispatch = useDispatch<AppDispatch>();
-  const { moviesWatchLater } = useSelector(
-    (state: RootState) => state.moviesWatchLater
+  const moviesWatchLater = useGlobalStore((state) => state.moviesWatchLater);
+  const setMoviesWatchLater = useGlobalStore(
+    (state) => state.setMoviesWatchLater
   );
 
   // parâmetros da rota
@@ -56,7 +52,9 @@ const Details: React.FC = ({ route, navigation }: any) => {
             <TextDetail>{movie.vote_average}</TextDetail>
           </DetailPseudoButton>
           <WatchLaterButton
-            onPress={() => dispatch(toogleIncrement(movie.id))}
+            onPress={() => {
+              setMoviesWatchLater(movie.id);
+            }}
             active={moviesWatchLater.includes(movie.id)}
           >
             <TextDetail>Watch later</TextDetail>

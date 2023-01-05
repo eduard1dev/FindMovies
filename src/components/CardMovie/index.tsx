@@ -1,10 +1,7 @@
 import React from "react";
-import { Image, Text } from "react-native";
-
-import { RootState } from "../../store";
-import { useSelector } from "react-redux";
 
 import { RectButtonProps } from "react-native-gesture-handler";
+import { useGlobalStore } from "../../store";
 
 import { Container, CardImage, Title, TextWatchLater } from "./styles";
 
@@ -21,9 +18,7 @@ interface CardMovieProps extends RectButtonProps {
 }
 
 function CardMovie({ data, ...rest }: CardMovieProps) {
-  const { moviesWatchLater } = useSelector(
-    (state: RootState) => state.moviesWatchLater
-  );
+  const moviesWatchLater = useGlobalStore((state) => state.moviesWatchLater);
 
   const image = {
     uri: `https://image.tmdb.org/t/p/w500${data.poster_path}`,
@@ -37,7 +32,7 @@ function CardMovie({ data, ...rest }: CardMovieProps) {
         resizeMode={"stretch"}
       />
       <Title numberOfLines={1}>{data.title}</Title>
-      {moviesWatchLater.includes(data.id.toString()) && (
+      {moviesWatchLater.includes(data.id) && (
         <TextWatchLater>Watch Later</TextWatchLater>
       )}
     </Container>

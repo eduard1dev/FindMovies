@@ -1,16 +1,13 @@
-import { configureStore } from "@reduxjs/toolkit";
+import create from "zustand";
+import { createUserSlice, UserStateProps } from "./user";
+import {
+  createMoviesWatchLaterSlice,
+  MoviesWatchLaterStateProps,
+} from "./moviesWatchLater";
 
-import UserReducer from "./User.store";
-import MoviesWatchLaterReducer from "./MoviesWatchLater.store";
-
-const store = configureStore({
-  reducer: {
-    moviesWatchLater: MoviesWatchLaterReducer,
-    user: UserReducer,
-  },
-});
-
-export type RootStateProps = ReturnType<typeof store.getState>;
-export type AppDispatchProps = typeof store.dispatch;
-
-export default store;
+export const useGlobalStore = create<
+  UserStateProps & MoviesWatchLaterStateProps
+>((...a) => ({
+  ...createUserSlice(...a),
+  ...createMoviesWatchLaterSlice(...a),
+}));

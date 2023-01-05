@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View } from "react-native";
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
@@ -14,15 +14,12 @@ import {
   TextSignIn,
   ButtonSignIn,
 } from "./styles";
-
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { AppDispatchProps, RootStateProps } from "../../store";
-import { setUser, reset } from "../../store/User.store";
+import { useGlobalStore } from "../../store";
 
 const Header: React.FC = () => {
-  const dispatch = useDispatch<AppDispatchProps>();
-  const { user } = useSelector((state: RootStateProps) => state.user);
+  const user = useGlobalStore((state) => state.user);
+  const setUser = useGlobalStore((state) => state.setUser);
+  const resetUser = useGlobalStore((state) => state.resetUser);
 
   async function signInWithGoogle() {
     // Check if your device supports Google Play
@@ -43,12 +40,10 @@ const Header: React.FC = () => {
         user: { displayName: string | null; photoURL: string | null };
       } = await auth().signInWithCredential(googleCredential);
 
-      dispatch(
-        setUser({
-          displayName: user.displayName || "not found",
-          photoURL: user.photoURL || "not found",
-        })
-      );
+      setUser({
+        displayName: user.displayName || "not found",
+        photoURL: user.photoURL || "not found",
+      });
     } catch (error) {
       console.error(error);
     }
@@ -58,9 +53,9 @@ const Header: React.FC = () => {
     try {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
-      await GoogleSignin.clearCachedAccessToken();
+      //await GoogleSignin.clearCachedAccessToken(idToken);
 
-      dispatch(reset());
+      resetUser();
     } catch (error) {
       console.error(error);
     }
@@ -75,7 +70,7 @@ const Header: React.FC = () => {
         </View>
         <Subtitle>Find your favorite movie</Subtitle>
       </View>
-      <ButtonSignIn onPress={() => (!!user ? signOut() : signInWithGoogle)}>
+      <ButtonSignIn onPress={() => (!!user ? signOut() : signInWithGoogle())}>
         {!!user ? (
           <ImageContainer source={{ uri: user.photoURL }} />
         ) : (

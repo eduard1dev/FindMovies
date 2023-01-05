@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Provider } from "react-redux";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import {
@@ -12,8 +11,7 @@ import Routes from "./src/routes";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import auth from "@react-native-firebase/auth";
-import store from "./src/store";
-import { setUser, UserProps } from "./src/store/User.store";
+import { useGlobalStore } from "./src/store";
 
 GoogleSignin.configure({
   webClientId:
@@ -23,6 +21,7 @@ GoogleSignin.configure({
 
 const App: React.FC = () => {
   const queryClient = new QueryClient();
+  const setUser = useGlobalStore((state) => state.setUser);
 
   let [fontsLoaded] = useFonts({
     Roboto_400Regular,
@@ -30,12 +29,12 @@ const App: React.FC = () => {
   });
 
   function onAuthStateChanged(user: any) {
-    store.dispatch(
+    if (user) {
       setUser({
-        displayName: user.displayName || "not found",
-        photoURL: user.photoURL || "not found",
-      })
-    );
+        displayName: user?.displayName,
+        photoURL: user?.photoURL,
+      });
+    }
   }
 
   useEffect(() => {
@@ -49,9 +48,7 @@ const App: React.FC = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Provider store={store}>
-        <Routes />
-      </Provider>
+      <Routes />
     </QueryClientProvider>
   );
 };
