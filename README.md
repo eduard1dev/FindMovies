@@ -2,7 +2,7 @@
 :clapper: This app helps you to find a movie to watch.
 
 What is in use in this app?
-- Redux Toolkit
+- Zustand
 - React Query
 - Carousel Reanimated
 - Fast Image
